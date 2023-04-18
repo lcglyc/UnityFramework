@@ -62,12 +62,11 @@ namespace ET
         public void Start()
         {
             Debug.Log("Code Loader Start");
-
-            this.Update += Game.Update;
-            this.LateUpdate += Game.LateUpdate;
-            this.OnApplicationQuit += Game.Close;
-            Game.EventSystem.Add(GetHotfixTypes());
-            Game.EventSystem.Publish(new EventType.AppStart());
+            // this.Update += Game.Update;
+            // this.LateUpdate += Game.LateUpdate;
+            // this.OnApplicationQuit += Game.Close;
+            // Game.EventSystem.Add(GetHotfixTypes());
+            // Game.EventSystem.Publish(new EventType.AppStart());
         }
 
         // 热重载调用下面三个方法

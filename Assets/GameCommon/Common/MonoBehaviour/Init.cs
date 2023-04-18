@@ -1,4 +1,5 @@
 ﻿using System.Threading;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace ET
@@ -26,7 +27,7 @@ namespace ET
 
             LitJson.UnityTypeBindings.Register();
 
-            UniTask.ExceptionHandler += Log.Error;
+            
 
             Log.ILog = new UnityLogger();
             //

@@ -21,7 +21,7 @@ namespace ET
 
             this.httpListener = new HttpListener();
 
-            StartAccept(prefixs).Coroutine();
+            StartAccept(prefixs);
         }
 
         public WService(ThreadSynchronizationContext threadSynchronizationContext)
@@ -77,7 +77,7 @@ namespace ET
             this.httpListener = null;
         }
 
-        private async UniTask StartAccept(IEnumerable<string> prefixs)
+        private async UniTaskVoid StartAccept(IEnumerable<string> prefixs)
         {
             try
             {
