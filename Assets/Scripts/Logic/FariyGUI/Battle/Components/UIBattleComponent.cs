@@ -1,4 +1,5 @@
-﻿using FairyGUI;
+﻿using Cysharp.Threading.Tasks;
+using FairyGUI;
 using ECSModel;
 using Kunpo;
 [ObjectSystem]
@@ -16,13 +17,13 @@ public class UIBattleComponent : Component
     TimerComponent TimerCom;
     GTextField timer_num, timer_num_large, wave_num, money_num;
     private GButton btn_gm;
-    private int TimerIndex=31;
+    private int TimerIndex = 31;
 
     public void Awake(UIBattleComponent self)
     {
         mBattlePanel = self.GetParent<FUI>();
         TimerCom = Game.Scene.GetComponent<TimerComponent>();
-        
+
         GameStart = mBattlePanel.GetTransition("GameStart");
         GameOver = mBattlePanel.GetTransition("GameOver");
         BossWarning = mBattlePanel.GetTransition("BossWarning");
@@ -30,12 +31,12 @@ public class UIBattleComponent : Component
         TimeWarning2 = mBattlePanel.GetTransition("TimeWarning2");
         TimeWarning3 = mBattlePanel.GetTransition("TimeWarning3");
         TimeWarning4 = mBattlePanel.GetTransition("TimeWarning4");
-        
+
         timer_num = mBattlePanel.Get("timer_num").GObject.asTextField;
         money_num = mBattlePanel.Get("money_num").GObject.asTextField;
         timer_num_large = mBattlePanel.Get("timer_num_large").GObject.asTextField;
         wave_num = mBattlePanel.Get("wave_num").GObject.asTextField;
-        
+
         btn_gm = FGUIHelper.GetButton("btn_gm", mBattlePanel, OnClickGM);
     }
 
@@ -51,13 +52,13 @@ public class UIBattleComponent : Component
 
     public void StartBattle()
     {
-        StartTime().Coroutine();
+        StartTime();
     }
 
-    public void ReStartBattle( int addTime )
+    public void ReStartBattle(int addTime)
     {
         TimerIndex = addTime;
-        StartTime().Coroutine();
+        StartTime();
     }
 
     public void EndBattle()
@@ -69,15 +70,15 @@ public class UIBattleComponent : Component
         timer_num_large.text = TimerIndex.ToString();
     }
 
-    async ECSVoid StartTime()
+    async UniTaskVoid StartTime()
     {
         await ReduceTimer();
     }
 
-    public void ReduceTime( int reduceNum)
+    public void ReduceTime(int reduceNum)
     {
         DoReduceTime(reduceNum);
-        
+
         if (!TimeWarning4.playing)
         {
             TimeWarning4.Play();
@@ -87,7 +88,7 @@ public class UIBattleComponent : Component
         DoDefeatEvent();
     }
 
-    private  void DoReduceTime( int index )
+    private void DoReduceTime(int index)
     {
         TimerIndex = TimerIndex - index;
         TimerIndex = TimerIndex < 0 ? 0 : TimerIndex;
@@ -102,7 +103,7 @@ public class UIBattleComponent : Component
         }
     }
 
-    private async ECSTask ReduceTimer()
+    private async UniTask ReduceTimer()
     {
         if (GameCtrlComponent.Instance.CurGameState == GameState.MAINPANEL)
             return;
@@ -112,12 +113,12 @@ public class UIBattleComponent : Component
 
         ShowTime();
 
-        if ( TimerIndex <= 15)
+        if (TimerIndex <= 15)
         {
             TimeWarning.Play();
         }
 
-        if( TimerIndex <= 9 )
+        if (TimerIndex <= 9)
         {
             TimeWarning.Stop();
             TimeWarning2.Play();
@@ -147,19 +148,19 @@ public class UIBattleComponent : Component
     }
 
 
-    public void UpdateMoney( BigNumber money )
+    public void UpdateMoney(BigNumber money)
     {
         money_num.text = money.ToStringD3();
     }
 
-    public void UpdateLevel( int level ,int maxLevel )
+    public void UpdateLevel(int level, int maxLevel)
     {
         string text = string.Format("{0}/{1}", level, maxLevel);
         wave_num.text = text;
     }
 
 
-    public void DebugOrderSetTime( int newTime )
+    public void DebugOrderSetTime(int newTime)
     {
         TimerIndex = newTime;
     }
@@ -168,10 +169,10 @@ public class UIBattleComponent : Component
     {
         if (BossWarning != null)
         {
-            BossWarning.Play();    
+            BossWarning.Play();
         }
     }
-    
+
 
     public override void Dispose()
     {

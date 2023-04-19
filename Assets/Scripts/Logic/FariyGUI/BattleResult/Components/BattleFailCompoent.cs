@@ -1,4 +1,5 @@
-﻿using FairyGUI;
+﻿using Cysharp.Threading.Tasks;
+using FairyGUI;
 using ECSModel;
 using Kunpo;
 
@@ -21,8 +22,8 @@ public class BattleFailCompoent : Component
     int reduceTime = 5;
     JsonLibComponent jsonlib;
     TimerComponent timer;
-    bool OnClickReplay=false;
-    
+    bool OnClickReplay = false;
+
     public void Awake(BattleFailCompoent self)
     {
         resultPanel = self.GetParent<FUI>();
@@ -43,7 +44,7 @@ public class BattleFailCompoent : Component
     }
 
     int curDiamod;
-    public void Init( BigNumber number,int diamond, int remaWave )
+    public void Init(BigNumber number, int diamond, int remaWave)
     {
         int tmpWave = remaWave > 0 ? remaWave : 1;
         gold_num.text = number.ToStringD3();
@@ -83,17 +84,17 @@ public class BattleFailCompoent : Component
 
     void ReduceFiveTime()
     {
-        UpdateReduce().Coroutine();
+        UpdateReduce();
     }
 
-    async ECSVoid UpdateReduce()
+    async UniTaskVoid UpdateReduce()
     {
         if (OnClickReplay)
         {
             reduceTime = 5;
             return;
         }
-            
+
 
         reduceTime--;
         if (reduceTime < 0)
@@ -102,14 +103,14 @@ public class BattleFailCompoent : Component
         }
         text_num.text = reduceTime.ToString();
 
-        if(reduceTime ==0)
+        if (reduceTime == 0)
         {
             OutTime();
             return;
         }
 
         await timer.WaitAsync(1000);
-        UpdateReduce().Coroutine();
+        UpdateReduce();
     }
 
     public override void Dispose()

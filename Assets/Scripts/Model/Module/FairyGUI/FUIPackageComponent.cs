@@ -1,28 +1,29 @@
 ﻿using System.Collections.Generic;
 using FairyGUI;
 using UnityEngine;
+using Cysharp.Threading.Tasks;
 
 namespace ECSModel
 {
-	/// <summary>
-	/// 管理所有UI Package
-	/// </summary>
-	public class FUIPackageComponent: Component
-	{
-		public const string FUI_PACKAGE_DIR = "Assets/Resources/FairyGUI";
-		public const string FUI_RunTime_DIR = "FairyGUI";
-		
-		private readonly Dictionary<string, UIPackage> packages = new Dictionary<string, UIPackage>();
-		
-        public bool HasPackage( string type)
+    /// <summary>
+    /// 管理所有UI Package
+    /// </summary>
+    public class FUIPackageComponent : Component
+    {
+        public const string FUI_PACKAGE_DIR = "Assets/Resources/FairyGUI";
+        public const string FUI_RunTime_DIR = "FairyGUI";
+
+        private readonly Dictionary<string, UIPackage> packages = new Dictionary<string, UIPackage>();
+
+        public bool HasPackage(string type)
         {
             return packages.ContainsKey(type);
         }
 
-		public void AddPackage(string type)
-		{
+        public void AddPackage(string type)
+        {
             UIPackage uiPackage = null;
-            if ( Define.IsAsync)
+            if (Define.IsAsync)
             {
                 string uiBundleDesName = $"{type}_fui".StringToAB();
                 string uiBundleResName = type.StringToAB();
@@ -42,9 +43,9 @@ namespace ECSModel
 
             this.packages.Add(type, uiPackage);
         }
-        
-		public async ECSTask AddPackageAsync(string type)
-		{
+
+        public async UniTask AddPackageAsync(string type)
+        {
             if (Define.IsAsync)
             {
                 string uiBundleDesName = $"{type}_fui".StringToAB();
@@ -60,15 +61,15 @@ namespace ECSModel
             }
             else
             {
-                await ECSTask.CompletedTask;
+                await UniTask.CompletedTask;
                 string package = packageName(type);
                 UIPackage uiPackage = UIPackage.AddPackage(package);
                 this.packages.Add(type, uiPackage);
             }
         }
 
-		public void RemovePackage(string type)
-		{
+        public void RemovePackage(string type)
+        {
             UIPackage package;
             if (packages.TryGetValue(type, out package))
             {
@@ -82,7 +83,7 @@ namespace ECSModel
                 packages.Remove(package.name);
             }
 
-            if( Define.IsAsync)
+            if (Define.IsAsync)
             {
                 string uiBundleDesName = $"{type}_fui".StringToAB();
                 string uiBundleResName = type.StringToAB();
@@ -98,5 +99,5 @@ namespace ECSModel
             return $"{FUI_PACKAGE_DIR}/{type}";
         }
     }
-	
+
 }

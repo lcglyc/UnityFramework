@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using MonogolyConfig;
 
@@ -6,7 +7,7 @@ namespace ECSModel
 {
     public static class BallFactory
     {
-        public static async ECSTask<Ball> Create(long id,int configID, BallAttributeCom otherBall =null )
+        public static async UniTask<Ball> Create(long id,int configID, BallAttributeCom otherBall =null )
         {
             //  临时给的名字
             ResourcesComponent resCom = Game.Scene.GetComponent<ResourcesComponent>();

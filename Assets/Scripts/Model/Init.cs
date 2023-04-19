@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Threading;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace ECSModel
@@ -9,10 +9,10 @@ namespace ECSModel
         private void Start()
         {
             Application.targetFrameRate = 60;
-            this.StartAsync().Coroutine();
+            this.StartAsync();
         }
 
-        private async ECSVoid StartAsync()
+        private async UniTaskVoid StartAsync()
         {
             try
             {

@@ -1,7 +1,8 @@
-﻿using ECSModel;
+﻿using Cysharp.Threading.Tasks;
+using ECSModel;
 public static class MapFactory
 {
-    public static async ECSTask Create( int levelID )
+    public static async UniTask Create( int levelID )
     {
         long id = RandomHelper.RandInt64();
         MapEntity map = ComponentFactory.CreateWithId<MapEntity>(id);
@@ -38,7 +39,7 @@ public static class MapFactory
 
         BallSplitCom splitcom = map.GetComponent<BallSplitCom>();
         if (splitcom == null) splitcom = map.AddComponent<BallSplitCom>();
-        splitcom.Init(attriCom.BallNumber, ball.ConfigID, attriCom.BallSpd, ball).Coroutine();
+        splitcom.Init(attriCom.BallNumber, ball.ConfigID, attriCom.BallSpd, ball).Forget();
     }
 
 }

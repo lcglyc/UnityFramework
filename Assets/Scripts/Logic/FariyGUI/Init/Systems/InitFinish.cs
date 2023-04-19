@@ -2,33 +2,34 @@
 using ECSModel;
 using MonogolyConfig;
 using UnityEditor;
+using Cysharp.Threading.Tasks;
 
 [Event(EventIdType.InitGameFinish)]
 public class InitFinish : AEvent
 {
     public override void Run()
     {
-        ShowGame().Coroutine();
+        ShowGame();
     }
 
-    async ECSVoid ShowGame()
+    async UniTaskVoid ShowGame()
     {
         //切换到游戏场景
         await ChangeScene();
-        
+
         InitFactory.Remove();
     }
 
-    async ECSTask ChangeScene()
+    async UniTask ChangeScene()
     {
-        
+
         using (SceneChangeComponent sceneChangeComponent = Game.Scene.AddComponent<SceneChangeComponent>())
         {
             await sceneChangeComponent.ChangeSceneAsync(SceneType.Login);
         }
 
         ShowMainGame();
-        
+
         BallComponent.Instance.CurBall.Visable = true;
         RacketComponent.Instance.CurRacket.Visible = true;
     }
@@ -40,9 +41,9 @@ public class InitFinish : AEvent
         mainFui.Visible = true;
     }
 
-  
 
-   
+
+
 
 
 }

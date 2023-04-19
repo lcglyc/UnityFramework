@@ -1,11 +1,12 @@
 ﻿
 using ECSModel;
 using FairyGUI;
+using Cysharp.Threading.Tasks;
 public static class InitFactory
 {
-    public static async ECSTask<FUI> Create()
+    public static async UniTask<FUI> Create()
     {
-        await ECSTask.CompletedTask;
+        await UniTask.CompletedTask;
 
         Game.Scene.GetComponent<FUIPackageComponent>().AddPackage(FUIType.LoadingPacage);
         FUI fui = ComponentFactory.Create<FUI, GObject>(UIPackage.CreateObject(FUIType.LoadingPacage, FUIType.LoadingPanel));

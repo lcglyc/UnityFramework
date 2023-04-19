@@ -20,13 +20,15 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+using System.Threading;
+
 namespace Microsoft.IO
 {
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.IO;
-    using System.Threading;
+    using Cysharp.Threading.Tasks;
 
     /// <summary>
     /// MemoryStream implementation that deals with pooling and managing memory streams which use potentially large
@@ -712,17 +714,17 @@ namespace Microsoft.IO
             int newPosition;
             switch (loc)
             {
-            case SeekOrigin.Begin:
-                newPosition = (int)offset;
-                break;
-            case SeekOrigin.Current:
-                newPosition = (int)offset + this.position;
-                break;
-            case SeekOrigin.End:
-                newPosition = (int)offset + this.length;
-                break;
-            default:
-                throw new ArgumentException("Invalid seek origin", nameof(loc));
+                case SeekOrigin.Begin:
+                    newPosition = (int)offset;
+                    break;
+                case SeekOrigin.Current:
+                    newPosition = (int)offset + this.position;
+                    break;
+                case SeekOrigin.End:
+                    newPosition = (int)offset + this.length;
+                    break;
+                default:
+                    throw new ArgumentException("Invalid seek origin", nameof(loc));
             }
             if (newPosition < 0)
             {

@@ -1,10 +1,11 @@
-﻿using UnityEngine;
+﻿using Cysharp.Threading.Tasks;
+using UnityEngine;
 using MonogolyConfig;
 namespace ECSModel
 {
     public static class RacketFactory
     {
-        public static async  ECSTask<Racket>  Create(long id,int configID, RacketAttributeCom other=null )
+        public static async UniTask<Racket> Create(long id, int configID, RacketAttributeCom other = null)
         {
             RacketComponent rackets = Game.Scene.GetComponent<RacketComponent>();
             ResourcesComponent resCom = Game.Scene.GetComponent<ResourcesComponent>();
@@ -16,21 +17,21 @@ namespace ECSModel
             go.transform.localRotation = Quaternion.identity;
             go.transform.localScale = Vector3.one;
             go.name = id.ToString();
-            
-            Racket racket = ComponentFactory.CreateWithId<Racket,GameObject>(id,go);
+
+            Racket racket = ComponentFactory.CreateWithId<Racket, GameObject>(id, go);
             racket.ConfigID = configID;
             //  用来控制横版的移动和位置
             racket.AddComponent<RacketMoveCom>();
 
             var racketAttr = racket.AddComponent<RacketAttributeCom>();
             BoardBaseData boardBaseData = jsonLib.GetBaseRacketDataByID(configID);
-            racketAttr.Init(boardBaseData,other);
+            racketAttr.Init(boardBaseData, other);
             racket.NineSliceScale = racketAttr.Length;
             var shootingCom = racket.AddComponent<RacketShootingCom>();
             var fireRate = racketAttr.WeaponValue / 1000;
             shootingCom.Init(fireRate);
 
-            var  racketPosCom = racket.AddComponent<RacketPosCom>();
+            var racketPosCom = racket.AddComponent<RacketPosCom>();
             racketPosCom.Init();
             rackets.Add(racket);
 

@@ -1,4 +1,5 @@
-﻿using FairyGUI;
+﻿using Cysharp.Threading.Tasks;
+using FairyGUI;
 using ECSModel;
 
 [ObjectSystem]
@@ -35,18 +36,18 @@ public class TipsComponent : Component
 
         mTips.text = tips;
         window.Show();
-        Delay().Coroutine();
+        Delay();
     }
 
 
 
-    async ECSVoid Delay()
+    async UniTaskVoid Delay()
     {
         await timer.WaitAsync(1500);
         window.Hide();
     }
-    
 
-    
-    
+
+
+
 }

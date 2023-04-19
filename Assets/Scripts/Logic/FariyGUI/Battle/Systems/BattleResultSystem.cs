@@ -1,6 +1,7 @@
 ﻿using ECSModel;
 using Kunpo;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 [Event(EventIdType.BattleResult)]
@@ -13,7 +14,7 @@ public class BattleResultSystem : AEvent<GameState>
         GameCtrlComponent.Instance.CurGameState = result;
 
         Player curPlayer = PlayerComponent.Instance.MyPlayer;
-        PlayerAttributeCom  atre = curPlayer.GetComponent<PlayerAttributeCom>();
+        PlayerAttributeCom atre = curPlayer.GetComponent<PlayerAttributeCom>();
 
         // 停止战斗主界面的动效
         StopBattlePanel();
@@ -22,17 +23,17 @@ public class BattleResultSystem : AEvent<GameState>
         {
             inGame.IsSuccess = false;
             ProceFailPanel(inGame);
-            ShowFailPanel(fui, inGame, atre.Money,atre.Diamond ).Coroutine();
+            ShowFailPanel(fui, inGame, atre.Money, atre.Diamond);
             return;
         }
 
         if (inGame.IsReplay)
             ProceFailPanel(inGame);
-        
-        ShowResultPanel(fui, inGame, atre.Money,atre.Diamond).Coroutine();
+
+        ShowResultPanel(fui, inGame, atre.Money, atre.Diamond);
     }
-    
-    public async ECSVoid ShowFailPanel(FUIComponent fuiCom, InGameDataCom inGame, BigNumber money,int diamond)
+
+    public async UniTaskVoid ShowFailPanel(FUIComponent fuiCom, InGameDataCom inGame, BigNumber money, int diamond)
     {
         FUI fui = null;
         if (fuiCom.Check(FUIType.UI_BattleFailPanel))
@@ -68,7 +69,7 @@ public class BattleResultSystem : AEvent<GameState>
         ball.Visable = true;
     }
 
-    public async ECSVoid ShowResultPanel(FUIComponent fuiCom, InGameDataCom inGame,BigNumber money,int Diamond)
+    public async UniTaskVoid ShowResultPanel(FUIComponent fuiCom, InGameDataCom inGame, BigNumber money, int Diamond)
     {
         FUI fui = null;
         if (fuiCom.Check(FUIType.UI_BattleResultPanel))
@@ -85,7 +86,7 @@ public class BattleResultSystem : AEvent<GameState>
         if (fui.Visible == false)
         {
             fui.Visible = true;
-            battle.ShowPanel( inGame.IsSuccess );
+            battle.ShowPanel(inGame.IsSuccess);
             battle.SetLevel(inGame.CurLevelID);
             battle.SetReward(inGame.InGameMoney);
             battle.SetPlayerDiamond(Diamond);

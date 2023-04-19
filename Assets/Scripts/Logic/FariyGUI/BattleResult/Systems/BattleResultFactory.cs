@@ -1,10 +1,11 @@
-﻿using ECSModel;
+﻿using Cysharp.Threading.Tasks;
+using ECSModel;
 using FairyGUI;
 public static class BattleResultFactory
 {
-    public static async ECSTask<FUI> CreateResultPanel()
+    public static async UniTask<FUI> CreateResultPanel()
     {
-        await ECSTask.CompletedTask;
+        await UniTask.CompletedTask;
         FUI fui = ComponentFactory.Create<FUI, GObject>(UIPackage.CreateObject(FUIType.MainGamePackage, FUIType.UI_BattleResultPanel));
         fui.Name = FUIType.UI_BattleResultPanel;
         fui.AddComponent<BattleResultComponent>();
@@ -13,9 +14,9 @@ public static class BattleResultFactory
         return fui;
     }
 
-    public static async ECSTask<FUI> CreateFailPanel()
+    public static async UniTask<FUI> CreateFailPanel()
     {
-        await ECSTask.CompletedTask;
+        await UniTask.CompletedTask;
         FUI fui = ComponentFactory.Create<FUI, GObject>(UIPackage.CreateObject(FUIType.MainGamePackage, FUIType.UI_BattleFailPanel));
         fui.Name = FUIType.UI_BattleFailPanel;
         BattleFailCompoent battle = fui.AddComponent<BattleFailCompoent>();

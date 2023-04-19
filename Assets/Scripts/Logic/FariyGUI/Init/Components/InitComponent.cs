@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using FairyGUI;
 using ECSModel;
 using MonogolyConfig;
@@ -21,45 +22,45 @@ public class InitComponent : Component
         timers = Game.Scene.GetComponent<TimerComponent>();
         FUI panel = self.GetParent<FUI>();
         panel.GObject.asCom.MakeFullScreen();
-        mTips =  panel.Get("tips").GObject.asTextField;
+        mTips = panel.Get("tips").GObject.asTextField;
         mTipsMsg = mTips.text;
-        RunTips().Coroutine();
+        RunTips();
     }
 
-    async ECSVoid RunTips()
+    async UniTaskVoid RunTips()
     {
         string tmp = string.Format(mTipsMsg, 50);
         mTips.text = tmp;
-        
+
         tmp = "正在初始化人物";
         mTips.text = tmp;
         Game.EventSystem.Run(EventIdType.InitPlayer);
         await timers.WaitAsync(100);
-        
+
         tmp = "正在初始化主界面";
         mTips.text = tmp;
         await LoadMainGame();
-        
+
         tmp = "正在加载 游戏组件";
         mTips.text = tmp;
         await LoadBall();
         await LoadRacket();
         await loadGm();
-        
+
         tmp = "正在进入游戏";
         await timers.WaitAsync(100);
         Game.EventSystem.Run(EventIdType.InitGameFinish);
     }
 
-    async ECSTask LoadMainGame()
+    async UniTask LoadMainGame()
     {
         FUIComponent fuiComponent = Game.Scene.GetComponent<FUIComponent>();
         FUI ui = await MainGameFactory.Create();
         ui.Visible = false;
         fuiComponent.Add(ui);
     }
-    
-    async ECSTask loadGm()
+
+    async UniTask loadGm()
     {
         FUIComponent fuiComponent = Game.Scene.GetComponent<FUIComponent>();
         FUI ui = await DebugFactory.Create();
@@ -69,10 +70,10 @@ public class InitComponent : Component
         ui.Visible = false;
         battle.Visible = false;
     }
-    
-    async ECSTask LoadBall()
+
+    async UniTask LoadBall()
     {
-        var ballBaseData =MonogolyConfig.BallBaseDataManager.GetInstance().GetConfigDic();
+        var ballBaseData = MonogolyConfig.BallBaseDataManager.GetInstance().GetConfigDic();
         Dictionary<long, BallAttributeCom> mSerializeds = GetSerializedData();
         if (mSerializeds != null && mSerializeds.Count != 0)
         {
@@ -80,24 +81,24 @@ public class InitComponent : Component
         }
         else
         {
-            await InitBallDataFromConfig( ballBaseData);    
+            await InitBallDataFromConfig(ballBaseData);
         }
     }
-    
-    
+
+
     Dictionary<long, BallAttributeCom> GetSerializedData()
     {
         SerializationComponent serializationComponent = Game.Scene.GetComponent<SerializationComponent>();
-        return  serializationComponent.GetSerializeBallAttributeCom();
+        return serializationComponent.GetSerializeBallAttributeCom();
     }
 
-    async ECSTask IniiBallFromDB(  Dictionary<long, BallAttributeCom> mSerializeds )
+    async UniTask IniiBallFromDB(Dictionary<long, BallAttributeCom> mSerializeds)
     {
         foreach (var VARIABLE in mSerializeds.Keys)
         {
             BallAttributeCom tmpData = mSerializeds[VARIABLE];
-            Ball ball =  await BallFactory.Create(VARIABLE, tmpData.ConfigID,tmpData);
-            if(tmpData.ConfigID == 10001)
+            Ball ball = await BallFactory.Create(VARIABLE, tmpData.ConfigID, tmpData);
+            if (tmpData.ConfigID == 10001)
             {
                 BallComponent.Instance.CurBall = ball;
                 ball.GetComponent<BallAttributeCom>().IsUnlock = true;
@@ -107,15 +108,15 @@ public class InitComponent : Component
             {
                 ball.Visable = false;
             }
-            
+
             BallComponent.Instance.Add(ball);
         }
     }
 
-    async ECSTask InitBallDataFromConfig(Dictionary<int, BallBaseData> ballBaseData)
+    async UniTask InitBallDataFromConfig(Dictionary<int, BallBaseData> ballBaseData)
     {
         int index = 0;
-        foreach(var data in ballBaseData.Values)
+        foreach (var data in ballBaseData.Values)
         {
             if (data.ID <= 0)
             {
@@ -123,38 +124,38 @@ public class InitComponent : Component
                 continue;
             }
             long id = RandomHelper.RandInt64();
-            Ball ball =  await BallFactory.Create(id, data.ID);
-            
-            if(data.ID == 10001)
+            Ball ball = await BallFactory.Create(id, data.ID);
+
+            if (data.ID == 10001)
             {
                 BallComponent.Instance.CurBall = ball;
                 ball.GetComponent<BallAttributeCom>().IsUnlock = true;
             }
-            
+
             ball.Visable = false;
             ball.GetComponent<BallPostionCom>().SetBallStartPostion(data.DefalutScale);
             BallComponent.Instance.Add(ball);
             index++;
         }
     }
-    
-    
-    async ECSTask LoadRacket()
+
+
+    async UniTask LoadRacket()
     {
-        Dictionary<long, RacketAttributeCom>  rackets = GetSerializedRacketData();
-        if (rackets == null || rackets.Count ==0)
+        Dictionary<long, RacketAttributeCom> rackets = GetSerializedRacketData();
+        if (rackets == null || rackets.Count == 0)
         {
-          await  CreateRacketFromConfig();    
+            await CreateRacketFromConfig();
         }
         else
         {
             await CreateRacketFromSerialize(rackets);
         }
-        
-        
+
+
     }
 
-    async  ECSTask CreateRacketFromSerialize( Dictionary<long, RacketAttributeCom>  rackets)
+    async UniTask CreateRacketFromSerialize(Dictionary<long, RacketAttributeCom> rackets)
     {
         foreach (var VARIABLE in rackets.Keys)
         {
@@ -168,21 +169,21 @@ public class InitComponent : Component
             racket.Visible = false;
         }
     }
-    
+
     Dictionary<long, RacketAttributeCom> GetSerializedRacketData()
     {
         SerializationComponent serializationComponent = Game.Scene.GetComponent<SerializationComponent>();
         return serializationComponent.GetSerializeRacketAttributeCom();
     }
 
-    async  ECSTask CreateRacketFromConfig()
+    async UniTask CreateRacketFromConfig()
     {
         var boardBaseData = MonogolyConfig.BoardBaseDataManager.GetInstance().GetConfigDic();
         foreach (var data in boardBaseData.Values)
         {
             if (data.ID <= 0)
             {
-                Log.Error("racket ID = "+data.ID.ToString());
+                Log.Error("racket ID = " + data.ID.ToString());
                 continue;
             }
             long id = RandomHelper.RandInt64();
@@ -195,11 +196,11 @@ public class InitComponent : Component
             }
             racket.Visible = false;
         }
-        
+
     }
-    
-    
-    
+
+
+
     // 这里暂时没啥要扔掉的
     public override void Dispose()
     {

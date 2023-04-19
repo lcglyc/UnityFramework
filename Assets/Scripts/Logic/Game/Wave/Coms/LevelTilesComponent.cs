@@ -2,6 +2,7 @@
 using DG.Tweening;
 using MonogolyConfig;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using Component = ECSModel.Component;
 
@@ -12,15 +13,15 @@ public class LevelTilesComponents : Component
     JsonLibComponent jsonlib = null;
     InGameDataCom mInGameData;
     List<Sprite> thisLevelRes = null;
-    GameObject bricksElement, particle=null;
+    GameObject bricksElement, particle = null;
     Dictionary<int, SingleTileData> thisWaveTileData = null;
 
     //当前波次里的砖块数量，当前关卡的ID
     public int thisWaveTileNum = 0, thisWaveID = 0;
 
-    float damageLv1 = 0,damageLv2=0;
+    float damageLv1 = 0, damageLv2 = 0;
 
-    public async ECSTask Init(List<LevelConfigData> tarTile,int waveID)
+    public async UniTask Init(List<LevelConfigData> tarTile, int waveID)
     {
         InitComs();
         InitLists();
@@ -59,7 +60,7 @@ public class LevelTilesComponents : Component
         testMoveWave = false;
     }
 
-    int GetZeroHPTile( List<LevelConfigData> allTiles )
+    int GetZeroHPTile(List<LevelConfigData> allTiles)
     {
         int index = 0;
         foreach (var VARIABLE in allTiles)
@@ -72,14 +73,14 @@ public class LevelTilesComponents : Component
 
         return index;
     }
-    
+
     #region 加载资源
 
-    async ECSTask LoadThiWaveRes(List<string> resNames)
+    async UniTask LoadThiWaveRes(List<string> resNames)
     {
         foreach (string res in resNames)
         {
-            if (string.IsNullOrEmpty(res) || res == string.Empty || res =="")
+            if (string.IsNullOrEmpty(res) || res == string.Empty || res == "")
             {
                 Debug.LogError(" Load This Wave Res Error:" + res);
                 continue;
@@ -89,7 +90,7 @@ public class LevelTilesComponents : Component
         }
     }
 
-    async ECSTask<Sprite> LoadSpriteRes(string name)
+    async UniTask<Sprite> LoadSpriteRes(string name)
     {
         string resab = string.Format("{0}.unity3d", name.ToLower());
 
@@ -132,14 +133,14 @@ public class LevelTilesComponents : Component
         return tmp;
     }
 
-    async ECSTask<GameObject> LoadObject(string abName, string prefabName)
+    async UniTask<GameObject> LoadObject(string abName, string prefabName)
     {
         await resCom.LoadBundleAsync(abName);
         GameObject go = resCom.GetAsset(abName, prefabName) as GameObject;
         return go;
     }
 
-    async ECSTask LoadBricks(List<LevelConfigData> levelTiles)
+    async UniTask LoadBricks(List<LevelConfigData> levelTiles)
     {
         bricksElement = await LoadObject("bricks.unity3d", "Bricks");
 
@@ -149,8 +150,9 @@ public class LevelTilesComponents : Component
             GameObject go = null;
             if (data.BrickType == 1) // 表示常规类型的砖块
             {
-                go = LoadBricks(bricksElement,data);    
-            }else if (data.BrickType == 2)
+                go = LoadBricks(bricksElement, data);
+            }
+            else if (data.BrickType == 2)
             {
                 go = await LoadBOSS(data);
             }
@@ -169,15 +171,15 @@ public class LevelTilesComponents : Component
         }
     }
 
-    
-    private GameObject LoadBricks( GameObject baseBricks, LevelConfigData data )
+
+    private GameObject LoadBricks(GameObject baseBricks, LevelConfigData data)
     {
         GameObject go = CloneGameObject(baseBricks, data);
         go.GetComponentInChildren<SpriteRenderer>().sprite = GetBrickSprite(data.Res);
         return go;
     }
 
-    private void CreateSingleTileData( GameObject go, LevelConfigData data)
+    private void CreateSingleTileData(GameObject go, LevelConfigData data)
     {
         SingleTileData tile = new SingleTileData();
         tile.ID = data.ID;
@@ -190,19 +192,19 @@ public class LevelTilesComponents : Component
         if (thisWaveTileData.ContainsKey(data.ID) == false)
             thisWaveTileData.Add(data.ID, tile);
     }
-    
+
 
     // 类型是2boss
-    
-    private async  ECSTask<GameObject> LoadBOSS(LevelConfigData data )
+
+    private async UniTask<GameObject> LoadBOSS(LevelConfigData data)
     {
         string bossName = data.Prefab;
-        string abName = string.Format("{0}.unity3d",bossName.ToLower());
+        string abName = string.Format("{0}.unity3d", bossName.ToLower());
         GameObject boss = await LoadObject(abName, bossName);
         return CloneGameObject(boss, data);
     }
 
-    private GameObject CloneGameObject( GameObject target ,LevelConfigData data)
+    private GameObject CloneGameObject(GameObject target, LevelConfigData data)
     {
         Vector3 position = Vector3.zero;
         GameObject go = GameObject.Instantiate(target) as GameObject;
@@ -212,9 +214,9 @@ public class LevelTilesComponents : Component
         go.name = data.ID.ToString();
         go.transform.parent = this.GameObject.transform;
         go.transform.position = position;
-        
-        TileListener  tileListener = go.GetComponent<TileListener>();
-        if (tileListener== null)
+
+        TileListener tileListener = go.GetComponent<TileListener>();
+        if (tileListener == null)
         {
             tileListener = go.AddComponent<TileListener>();
         }
@@ -229,17 +231,17 @@ public class LevelTilesComponents : Component
         }
         return go;
     }
-    
-    
-    Sprite GetBrickSprite( string name)
+
+
+    Sprite GetBrickSprite(string name)
     {
         Sprite sprite = thisLevelRes.Find(x => x.name == name);
         return sprite;
     }
-    
-    public async ECSTask< GameObject > LoadParticle()
+
+    public async UniTask<GameObject> LoadParticle()
     {
-        await ECSTask.CompletedTask;
+        await UniTask.CompletedTask;
         string abName = "explodeparticle.unity3d";
         string prefabName = "ExplodeParticle";
         particle = await LoadObject(abName, prefabName);
@@ -248,9 +250,9 @@ public class LevelTilesComponents : Component
         return particle;
     }
 
-    async ECSVoid ShowPartilce(GameObject go)
+    async UniTaskVoid ShowPartilce(GameObject go)
     {
-        await ECSTask.CompletedTask;
+        await UniTask.CompletedTask;
         GameObject tempParticle = GameObject.Instantiate(particle) as GameObject;
         tempParticle.transform.position = go.transform.position;
         tempParticle.SetActive(true);
@@ -267,7 +269,7 @@ public class LevelTilesComponents : Component
     private void ChangeTileAvatar(GameObject go, int damageLv, string damgeAvatar)
     {
         SpriteRenderer renderer = go.GetComponentInChildren<SpriteRenderer>();
-        foreach(Sprite sprite in thisLevelRes  )
+        foreach (Sprite sprite in thisLevelRes)
         {
             if (sprite.name.ToLower() == damgeAvatar.ToLower())
                 renderer.sprite = sprite;
@@ -288,7 +290,7 @@ public class LevelTilesComponents : Component
         if (tileData.CurHp <= 0)
             return true;
 
-        
+
         int tmpHp = GetDemage(tileData.CurHp, atk);
         if (tmpHp <= 0)
         {
@@ -298,7 +300,7 @@ public class LevelTilesComponents : Component
         }
 
         tileData.TileDamageState = GetTileGetHitLv(tileData.MaxHp, tmpHp);
-        switch(  tileData.TileDamageState)
+        switch (tileData.TileDamageState)
         {
             case SingleTileDamageLv.Normal:
                 break;
@@ -316,7 +318,7 @@ public class LevelTilesComponents : Component
 
         return false;
     }
-    
+
 
     private void ShowDestryTileEffect(SingleTileData tileData)
     {
@@ -324,16 +326,16 @@ public class LevelTilesComponents : Component
         tileData.TileDamageState = SingleTileDamageLv.Destory;
         tileData.CurHp = 0;
         tileData.Go.SetActive(false);
-        ShowPartilce(tileData.Go).Coroutine();
+        ShowPartilce(tileData.Go);
     }
 
-    private int GetDemage( int  tileHP , int atk)
+    private int GetDemage(int tileHP, int atk)
     {
         return tileHP - atk;
     }
 
 
-    SingleTileDamageLv  GetTileGetHitLv( int maxhp, int resthp )
+    SingleTileDamageLv GetTileGetHitLv(int maxhp, int resthp)
     {
         int lv_1 = Mathf.FloorToInt((float)maxhp * damageLv1);
         int lv_2 = Mathf.FloorToInt((float)maxhp * damageLv2);
@@ -344,7 +346,7 @@ public class LevelTilesComponents : Component
         }
         else if (resthp < lv_1 && resthp >= lv_2)
         {
-          return SingleTileDamageLv.DamageLv1;
+            return SingleTileDamageLv.DamageLv1;
         }
         else if (resthp < lv_2 && resthp > 0)
         {
@@ -358,11 +360,11 @@ public class LevelTilesComponents : Component
     private void ReduceTile()
     {
         thisWaveTileNum--;
-        
-        if (thisWaveTileNum < 0) 
+
+        if (thisWaveTileNum < 0)
             return;
-        
-        
+
+
         // 如果这关，不是最大关卡
         if (thisWaveID < mInGameData.MaxWave)
         {
@@ -382,60 +384,60 @@ public class LevelTilesComponents : Component
 
     void MoveNextWave()
     {
-//        // 如果当前场景不是最后一个场景，走切换流程
-//        if (thisWaveID < mInGameData.MaxWave)
-//        {
-//            if (ShowNextWave())
-//            {
-//                testMoveWave = true;
-//                Game.EventSystem.Run<int>(EventIdType.Move2NextWave, thisWaveID);
-//            }
-//
-//            if (thisWaveTileNum == 0) {
-//                
-//                mInGameData.AddPassdWave(thisWaveID);
-//           
-//                if (mInGameData.PassAllWave())
-//                {
-//                    NotifyReult();
-//                }
-//                this.GetParent<WaveEntity>().Dispose();
-//            }
-//        }
+        //        // 如果当前场景不是最后一个场景，走切换流程
+        //        if (thisWaveID < mInGameData.MaxWave)
+        //        {
+        //            if (ShowNextWave())
+        //            {
+        //                testMoveWave = true;
+        //                Game.EventSystem.Run<int>(EventIdType.Move2NextWave, thisWaveID);
+        //            }
+        //
+        //            if (thisWaveTileNum == 0) {
+        //                
+        //                mInGameData.AddPassdWave(thisWaveID);
+        //           
+        //                if (mInGameData.PassAllWave())
+        //                {
+        //                    NotifyReult();
+        //                }
+        //                this.GetParent<WaveEntity>().Dispose();
+        //            }
+        //        }
     }
 
-     void NotifyReult()
-     {
-//         Log.Debug("Battle Result is start Running");
-//         if (mInGameData.PassAllWave())
-//         {
-//             Log.Debug("Battle Result is moving");
-//             Game.EventSystem.Run<GameState>(EventIdType.BattleResult, GameState.InGame_Reslut);
-//         }
-//             
-//         thisWaveTileNum = 0;
-     }
-    
+    void NotifyReult()
+    {
+        //         Log.Debug("Battle Result is start Running");
+        //         if (mInGameData.PassAllWave())
+        //         {
+        //             Log.Debug("Battle Result is moving");
+        //             Game.EventSystem.Run<GameState>(EventIdType.BattleResult, GameState.InGame_Reslut);
+        //         }
+        //             
+        //         thisWaveTileNum = 0;
+    }
+
 
     bool ShowNextWave()
     {
-//        if (thisWaveTileNum > 3)
-//            return false;
-//
-//        int nextWave = thisWaveID + 1;
-//        if (nextWave <= mInGameData.CurWave)
-//            return false;
-//
-//        // 如果下一关已经过了
-//        if (mInGameData.IsThisWavePassed(nextWave))
-//            return false;
-//            
-//
-//        if (testMoveWave) return false;
-//
-       return true;
+        //        if (thisWaveTileNum > 3)
+        //            return false;
+        //
+        //        int nextWave = thisWaveID + 1;
+        //        if (nextWave <= mInGameData.CurWave)
+        //            return false;
+        //
+        //        // 如果下一关已经过了
+        //        if (mInGameData.IsThisWavePassed(nextWave))
+        //            return false;
+        //            
+        //
+        //        if (testMoveWave) return false;
+        //
+        return true;
     }
-    
+
     #endregion
 
     public override void Dispose()
@@ -452,9 +454,9 @@ public class LevelTilesComponents : Component
             bricksElement = null;
         }
 
-        if(thisWaveTileData != null)
+        if (thisWaveTileData != null)
         {
-            foreach(SingleTileData tile in thisWaveTileData.Values )
+            foreach (SingleTileData tile in thisWaveTileData.Values)
             {
                 MonoBehaviour.Destroy(tile.Go);
                 tile.ConfigData = null;

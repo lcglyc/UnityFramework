@@ -1,49 +1,50 @@
 ﻿using System.IO;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace ECSModel
 {
-	[ObjectSystem]
-	public class AssetsBundleLoaderAsyncSystem : UpdateSystem<AssetsBundleLoaderAsync>
-	{
-		public override void Update(AssetsBundleLoaderAsync self)
-		{
-			self.Update();
-		}
-	}
+    [ObjectSystem]
+    public class AssetsBundleLoaderAsyncSystem : UpdateSystem<AssetsBundleLoaderAsync>
+    {
+        public override void Update(AssetsBundleLoaderAsync self)
+        {
+            self.Update();
+        }
+    }
 
-	public class AssetsBundleLoaderAsync : Component
-	{
-		private AssetBundleCreateRequest request;
+    public class AssetsBundleLoaderAsync : Component
+    {
+        private AssetBundleCreateRequest request;
 
-		private ETTaskCompletionSource<AssetBundle> tcs;
+        
+        private UniTaskCompletionSource<AssetBundle> tcs;
 
-		public void Update()
-		{
-			if (!this.request.isDone)
-			{
-				return;
-			}
+        public void Update()
+        {
+            if (!this.request.isDone)
+            {
+                return;
+            }
 
-			ETTaskCompletionSource<AssetBundle> t = tcs;
-			t.SetResult(this.request.assetBundle);
-		}
+            UniTaskCompletionSource<AssetBundle> t = tcs;
+            t.TrySetResult(this.request.assetBundle);
+        }
 
-		public override void Dispose()
-		{
-			if (this.IsDisposed)
-			{
-				return;
-			}
-			base.Dispose();
-		}
+        public override void Dispose()
+        {
+            if (this.IsDisposed)
+            {
+                return;
+            }
+            base.Dispose();
+        }
 
-		public ECSTask<AssetBundle> LoadAsync(string path)
-		{
-			this.tcs = new ETTaskCompletionSource<AssetBundle>();
-			this.request = AssetBundle.LoadFromFileAsync(path);
-			return this.tcs.Task;
-		}
-	}
+        public UniTask<AssetBundle> LoadAsync(string path)
+        {
+            this.tcs = new UniTaskCompletionSource<AssetBundle>();
+            this.request = AssetBundle.LoadFromFileAsync(path);
+            return this.tcs.Task;
+        }
+    }
 }

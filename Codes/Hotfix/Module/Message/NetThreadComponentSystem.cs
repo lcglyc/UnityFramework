@@ -1,15 +1,15 @@
 ﻿using System;
-using System.Threading;
+using Cysharp.Threading.Tasks;
 
 namespace ET
 {
     [ObjectSystem]
-    public class NetThreadComponentAwakeSystem: AwakeSystem<NetThreadComponent>
+    public class NetThreadComponentAwakeSystem : AwakeSystem<NetThreadComponent>
     {
         public override void Awake(NetThreadComponent self)
         {
             NetThreadComponent.Instance = self;
-            
+
             self.ThreadSynchronizationContext = ThreadSynchronizationContext.Instance;
 
             self.foreachAction = service => service.Update();
@@ -17,23 +17,23 @@ namespace ET
     }
 
     [ObjectSystem]
-    public class NetThreadComponentUpdateSystem: LateUpdateSystem<NetThreadComponent>
+    public class NetThreadComponentUpdateSystem : LateUpdateSystem<NetThreadComponent>
     {
         public override void LateUpdate(NetThreadComponent self)
         {
             self.Services.Foreach(self.foreachAction);
         }
     }
-    
+
     [ObjectSystem]
-    public class NetThreadComponentDestroySystem: DestroySystem<NetThreadComponent>
+    public class NetThreadComponentDestroySystem : DestroySystem<NetThreadComponent>
     {
         public override void Destroy(NetThreadComponent self)
         {
             self.Stop();
         }
     }
-    
+
     [FriendClass(typeof(NetThreadComponent))]
     public static class NetThreadComponentSystem
     {
@@ -54,7 +54,7 @@ namespace ET
                 self.Services.Add(kService);
             });
         }
-        
+
         public static void Remove(this NetThreadComponent self, AService kService)
         {
             // 这里要去下一帧删除，避免foreach错误
@@ -67,6 +67,6 @@ namespace ET
                 self.Services.Remove(kService);
             });
         }
-        
+
     }
 }

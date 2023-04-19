@@ -1,30 +1,31 @@
 ﻿using ECSModel;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 
 [Event(EventIdType.InitBattle)]
 public class StartBattleSystem : AEvent
 {
     public override void Run()
     {
-        RunStartBattle().Coroutine();
+        RunStartBattle();
     }
 
-    async ECSVoid RunStartBattle()
+    async UniTaskVoid RunStartBattle()
     {
         // game  Start 动效
         Game.EventSystem.Run<bool>(EventIdType.UpdateMainGamePanelVisable, false);
         await Game.Scene.GetComponent<TimerComponent>().WaitAsync(650);
 
-        CreateBattleUI().Coroutine();
+        CreateBattleUI();
         await Game.Scene.GetComponent<TimerComponent>().WaitAsync(1000);
 
         // 加载目标关卡
         PlayerAttributeCom attribute = PlayerComponent.Instance.MyPlayer.GetComponent<PlayerAttributeCom>();
         int level = attribute.PlayerCurLevel;
-        LoadMap(level).Coroutine();
+        LoadMap(level);
     }
 
-    async ECSVoid CreateBattleUI()
+    async UniTaskVoid CreateBattleUI()
     {
         FUIComponent fuicom = Game.Scene.GetComponent<FUIComponent>();
         bool isCreated = fuicom.Check(FUIType.BattlePanel);
@@ -39,12 +40,12 @@ public class StartBattleSystem : AEvent
             fui = fuicom.Get(FUIType.BattlePanel);
         }
 
-         fui.GetComponent<UIBattleComponent>().ShowBattle();
+        fui.GetComponent<UIBattleComponent>().ShowBattle();
     }
 
     // 初始化地图
 
-    public async ECSVoid LoadMap(int targetLevel)
+    public async UniTaskVoid LoadMap(int targetLevel)
     {
         //  主要是等所有的tile加载完毕
         await MapFactory.Create(targetLevel);
@@ -54,13 +55,13 @@ public class StartBattleSystem : AEvent
 }
 
 [Event(EventIdType.InitBattleOver)]
-public class InitBattleOver: AEvent
+public class InitBattleOver : AEvent
 {
     public override void Run()
     {
         // 收到这个消息以后， UI 可以开始倒计时，GamePlay 组件可以开始执行
         RunUI();
-        RunBattleCom().Coroutine();
+        RunBattleCom();
     }
 
     public void RunUI()
@@ -74,7 +75,7 @@ public class InitBattleOver: AEvent
         gameData.StartBallScale = BallComponent.Instance.CurBall.LocalScale;
     }
 
-    async  ECSVoid RunBattleCom()
+    async UniTaskVoid RunBattleCom()
     {
         await Game.Scene.GetComponent<TimerComponent>().WaitAsync(500);
         BallComponent.Instance.CurBall.GetComponent<BallPostionCom>().IsSyncRacketPostion = false;

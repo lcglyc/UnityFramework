@@ -1,4 +1,5 @@
-﻿using ECSModel;
+﻿using Cysharp.Threading.Tasks;
+using ECSModel;
 using UnityEngine;
 using Component = ECSModel.Component;
 using Object = UnityEngine.Object;
@@ -6,7 +7,7 @@ using Object = UnityEngine.Object;
 public class MapEffectCompoent : Component
 {
     private GameObject mMapEffect;
-    public async  ECSTask LoadLevelEffectPrefabs( string abName,string resName)
+    public async  UniTask LoadLevelEffectPrefabs( string abName,string resName)
     {
         ResourcesComponent rescom = Game.Scene.GetComponent<ResourcesComponent>();
         await  rescom.LoadBundleAsync(abName);

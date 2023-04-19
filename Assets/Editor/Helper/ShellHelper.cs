@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using System.Collections.Generic;
 using System.Threading;
+using Cysharp.Threading.Tasks;
 using System.Threading.Tasks;
 
 namespace ET
@@ -22,7 +23,7 @@ namespace ET
         }
 
         private static volatile bool isFinish;
-        
+
         public static void Run(string cmd, string workDirectory, List<string> environmentVars = null)
         {
             Process p = null;
@@ -67,10 +68,10 @@ namespace ET
                     start.StandardErrorEncoding = System.Text.Encoding.UTF8;
                 }
 
-                
+
 
                 Barrier barrier = new Barrier(2);
-                
+
                 // 放到新线程启动进程，主线程循环读标准输出，直到进程结束
                 Task.Run(() =>
                 {
@@ -79,7 +80,7 @@ namespace ET
                     p.WaitForExit();
                     isFinish = true;
                 });
-                
+
                 // 这里要等待进程启动才能往下走，否则p将为null
                 barrier.SignalAndWait();
                 do
@@ -109,7 +110,7 @@ namespace ET
                     UnityEngine.Debug.LogError(error);
                 }
 
-                
+
                 p.Close();
                 if (hasError)
                 {

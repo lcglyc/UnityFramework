@@ -1,4 +1,5 @@
-﻿using FairyGUI;
+﻿using Cysharp.Threading.Tasks;
+using FairyGUI;
 using ECSModel;
 using Kunpo;
 using UnityEngine;
@@ -16,8 +17,8 @@ public class MainGameComponent : Component
 {
     // 底部按钮
     GButton mMain_1, mMain_2, mMain_3, mMain_4;
-    
-    GButton mRank,btn_gm;
+
+    GButton mRank, btn_gm;
 
     // 中间数值
     GTextField mLevel_0_num, mLevel_1_num, mLevel_2_num;
@@ -77,13 +78,13 @@ public class MainGameComponent : Component
         mMain_2 = FGUIHelper.GetButton("main_2", mMainGamePanel, OnClickMain2);
         mMain_3 = FGUIHelper.GetButton("main_3", mMainGamePanel, OnClickMain3);
         mMain_4 = FGUIHelper.GetButton("main_4", mMainGamePanel, OnClickMain4);
-        
-        mainController= FGUIHelper.GetController("BtnMainSelect",mMainGamePanel);
+
+        mainController = FGUIHelper.GetController("BtnMainSelect", mMainGamePanel);
         // mMain_1.pageOption.controller = mainController;
         // mMain_2.pageOption.controller = mainController;
         // mMain_3.pageOption.controller = mainController;
         // mMain_4.pageOption.controller = mainController;
-        
+
         mMain_1.changeStateOnClick = false;
         mMain_2.changeStateOnClick = false;
         mMain_3.changeStateOnClick = false;
@@ -93,9 +94,9 @@ public class MainGameComponent : Component
     void InitLeftBtns()
     {
         mFunc_btn = FGUIHelper.GetButton("func_btn", mMainGamePanel, FuncBtn);
-        mFunc_1 = FGUIHelper.GetButton("func_1", mMainGamePanel,Func_1);
-        mFunc_2 = FGUIHelper.GetButton("func_2", mMainGamePanel,Func_2);
-        mFunc_3 = FGUIHelper.GetButton("func_3", mMainGamePanel,Func_3);
+        mFunc_1 = FGUIHelper.GetButton("func_1", mMainGamePanel, Func_1);
+        mFunc_2 = FGUIHelper.GetButton("func_2", mMainGamePanel, Func_2);
+        mFunc_3 = FGUIHelper.GetButton("func_3", mMainGamePanel, Func_3);
         mLeftTranShow = FGUIHelper.GetTransition("FuncShow", mMainGamePanel);
         mLeftTranHide = FGUIHelper.GetTransition("FuncHide", mMainGamePanel);
         GameStart = FGUIHelper.GetTransition("GameStrat", mMainGamePanel);
@@ -149,20 +150,20 @@ public class MainGameComponent : Component
     {
         ChangeBottons(GameState.MAINCAR);
     }
-    
+
     void OnClickMain4()
     {
         TipsComponent.Instance.ShowTips("功能尚未开启");
     }
 
-    public void ChangeBottons(GameState newState )
+    public void ChangeBottons(GameState newState)
     {
         if (isNeedWait)
             return;
-        
+
         GameState oldState = GameCtrlComponent.Instance.CurGameState;
         if (newState == oldState) return;
-        SendClearMsg(oldState,newState);
+        SendClearMsg(oldState, newState);
         GameCtrlComponent.Instance.CurGameState = newState;
         SendNewMsg(newState);
     }
@@ -173,27 +174,27 @@ public class MainGameComponent : Component
         switch (oldState)
         {
             case GameState.MAINPANEL:
-            {
+                {
                     isChallengePanel = false;
-            }
-            break;
+                }
+                break;
             case GameState.UPGRADEPANEL:
-            {
-                Game.EventSystem.Run<GameState>(EventIdType.CloseUpgradePanel,newState);
-            } 
-            break;
+                {
+                    Game.EventSystem.Run<GameState>(EventIdType.CloseUpgradePanel, newState);
+                }
+                break;
             case GameState.MAINCAR:
-            {
-                Game.EventSystem.Run(EventIdType.CloseRacketUpgradePanel);
-            }
+                {
+                    Game.EventSystem.Run(EventIdType.CloseRacketUpgradePanel);
+                }
                 break;
             case GameState.MAINPSTORE:
-            {
+                {
 
-            }
-            break;
+                }
+                break;
         }
- 
+
     }
 
     void SendNewMsg(GameState newState)
@@ -203,7 +204,7 @@ public class MainGameComponent : Component
             case GameState.MAINPANEL:
                 {
                     isChallengePanel = true;
-             //       mMain_1.pageOption.index = 0;
+                    //       mMain_1.pageOption.index = 0;
                     mMain_1.selected = true;
                     SaveBallAttribute();
                     SaveRacketAttribute();
@@ -211,38 +212,38 @@ public class MainGameComponent : Component
                 break;
             case GameState.UPGRADEPANEL:
                 {
-                  //  mMain_2.pageOption.name = "Main2";
+                    //  mMain_2.pageOption.name = "Main2";
                     mMain_2.selected = true;
                     Game.EventSystem.Run(EventIdType.InitUpgradePanel);
-                    
+
                     long id = RacketComponent.Instance.CurRacket.Id;
-                    Game.EventSystem.Run<long,bool>(EventIdType.UpdateRacketAlpha,id,false);
+                    Game.EventSystem.Run<long, bool>(EventIdType.UpdateRacketAlpha, id, false);
                 }
                 break;
             case GameState.MAINCAR:
                 {
-                 //   mMain_3.pageOption.index = 2;
+                    //   mMain_3.pageOption.index = 2;
                     mMain_3.selected = true;
                     Game.EventSystem.Run(EventIdType.InitRacketUpgradePanel);
 
                     long id = BallComponent.Instance.CurBall.Id;
-                    Game.EventSystem.Run<long,bool>(EventIdType.UpdateBallAlpha,id,false);
+                    Game.EventSystem.Run<long, bool>(EventIdType.UpdateBallAlpha, id, false);
                 }
                 break;
             case GameState.MAINPSTORE:
                 {
-                //    mMain_4.pageOption.index = 3;
+                    //    mMain_4.pageOption.index = 3;
                     mMain_4.selected = true;
                 }
                 break;
         }
-        
+
         isNeedWait = true;
-        AddTimers().Coroutine();
+        AddTimers();
     }
 
 
-    async ECSVoid AddTimers()
+    async UniTaskVoid AddTimers()
     {
         await timer.WaitAsync(500);
         isNeedWait = false;
@@ -253,7 +254,7 @@ public class MainGameComponent : Component
     {
         TipsComponent.Instance.ShowTips("功能尚未开启");
         return;
-        
+
         if (IsShowLeftMennu)
             mLeftTranHide.Play();
         else
@@ -284,7 +285,7 @@ public class MainGameComponent : Component
 
     void OnClickGMBtn()
     {
-        if( GameCtrlComponent.Instance.CurGameState == GameState.GM )
+        if (GameCtrlComponent.Instance.CurGameState == GameState.GM)
             return;
 
         if (GameCtrlComponent.Instance.CurGameState != GameState.MAINPANEL)
@@ -292,10 +293,10 @@ public class MainGameComponent : Component
             TipsComponent.Instance.ShowTips("请在主界面打开 GM 功能");
             return;
         }
-        
-            
-        
-        Game.EventSystem.Run( EventIdType.OpenDebugPanel);
+
+
+
+        Game.EventSystem.Run(EventIdType.OpenDebugPanel);
     }
 
     #endregion
@@ -306,14 +307,14 @@ public class MainGameComponent : Component
         UpdateDiamondUI(mCurPlayerAttirbute.Diamond);
         UpdateLevelUI(mCurPlayerAttirbute.PlayerCurLevel);
     }
-    
+
     public void UpdateMoneyUIByAttribute()
     {
         UpdateMoneyUI(mCurPlayerAttirbute.Money);
         SavePlayerAttribute();
     }
 
-    public  void UpdateDiamondUIByAttirbute()
+    public void UpdateDiamondUIByAttirbute()
     {
         UpdateDiamondUI(mCurPlayerAttirbute.Diamond);
         SavePlayerAttribute();
@@ -324,7 +325,7 @@ public class MainGameComponent : Component
         UpdateLevelUI(mCurPlayerAttirbute.PlayerCurLevel);
     }
 
-    void UpdateMoneyUI( BigNumber money)
+    void UpdateMoneyUI(BigNumber money)
     {
         mGold_num.text = money.ToStringD3();
     }
@@ -334,7 +335,7 @@ public class MainGameComponent : Component
         mCrys_num.text = newDiamod.ToString();
     }
 
-    void UpdateLevelUI( int newLevel)
+    void UpdateLevelUI(int newLevel)
     {
 
         int last = newLevel - 1;
@@ -352,7 +353,7 @@ public class MainGameComponent : Component
         SavePlayerAttribute();
     }
 
-    bool IsBossLevel( int level )
+    bool IsBossLevel(int level)
     {
         int lvType = jsonlib.GetLevelType(level);
         return lvType == 1;
@@ -360,7 +361,7 @@ public class MainGameComponent : Component
 
     public void CheckLevelState(int level)
     {
-        
+
         mLeft_0_bg.visible = true;
         mLevel_0_num.visible = true;
         mLeftArrow.visible = true;
@@ -387,11 +388,11 @@ public class MainGameComponent : Component
     }
 
 
-    public void UpdateGameMainPanelVisable( bool IsShow)
+    public void UpdateGameMainPanelVisable(bool IsShow)
     {
         if (GameStart == null) return;
 
-        if( IsShow)
+        if (IsShow)
         {
             mMainGamePanel.Visible = true;
             UpdatePlayerAttirbute();
@@ -400,13 +401,14 @@ public class MainGameComponent : Component
         }
 
         GameStart.Play(
-            () => {
+            () =>
+            {
                 mMainGamePanel.Visible = false;
             }
             );
     }
-    
-    
+
+
     //TODO:临时地方
     private void SavePlayerAttribute()
     {
@@ -415,7 +417,7 @@ public class MainGameComponent : Component
 
     private void SaveBallAttribute()
     {
-        serializationComponent.SerializetionAllBall(); 
+        serializationComponent.SerializetionAllBall();
     }
 
     private void SaveRacketAttribute()

@@ -1,4 +1,5 @@
-﻿using ECSModel;
+﻿using Cysharp.Threading.Tasks;
+using ECSModel;
 using UnityEngine;
 using MonogolyConfig;
 using Component = ECSModel.Component;
@@ -13,10 +14,10 @@ public class BallAvatarCom : Component
         string resName = baseBallData.BallRes;
         resCom = Game.Scene.GetComponent<ResourcesComponent>();
         mRender = this.Parent.GameObject.GetComponentInChildren<SpriteRenderer>();
-        LoadAvatar(resName).Coroutine();
+        LoadAvatar(resName);
     }
 
-    async ECSVoid LoadAvatar( string resName)
+    async UniTaskVoid LoadAvatar(string resName)
     {
         string resabName = resName.ToLower() + ".unity3d";
         await resCom.LoadBundleAsync(resabName);
@@ -37,11 +38,11 @@ public class BallAvatarCom : Component
 
     public override void Dispose()
     {
-        if(mThisAvatar != null)
+        if (mThisAvatar != null)
         {
             mThisAvatar = null;
         }
-        
+
         base.Dispose();
     }
 
