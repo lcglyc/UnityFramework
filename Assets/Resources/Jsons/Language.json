@@ -1,0 +1,28 @@
+
+[
+    {
+        "Key" : "Text_Upgrade_Tips_1",
+        "CN"  : "金币不足，无法升级！",
+        "EN"  : "abc"
+    },
+    {
+        "Key" : "Text_Upgrade_Tips_2",
+        "CN"  : "当前培养已满级！",
+        "EN"  : "abc"
+    },
+    {
+        "Key" : "Text_BallUnlock_Condition_1",
+        "CN"  : "击败第[color=#FFCC00][size=50]{0}[/size][/color]关解锁",
+        "EN"  : "abc"
+    },
+    {
+        "Key" : "Text_Global_Tips_CrysNotEnough",
+        "CN"  : "钻石不足！",
+        "EN"  : "abc"
+    },
+    {
+        "Key" : "Text_Upgrade_Weapon_Attr_1",
+        "CN"  : "射速",
+        "EN"  : "abc"
+    }
+]

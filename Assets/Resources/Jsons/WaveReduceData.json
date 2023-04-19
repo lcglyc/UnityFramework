@@ -1,0 +1,135 @@
+
+[
+    {
+        "ID" : "1",
+        "BallSizeParam" : "1",
+        "BallSpdParam"  : "1",
+        "BoardLengthwParam" : "1"
+    },
+    {
+        "ID" : "2",
+        "BallSizeParam" : "1,0.8",
+        "BallSpdParam"  : "1,0.8",
+        "BoardLengthwParam" : "1,0.8"
+    },
+    {
+        "ID" : "3",
+        "BallSizeParam" : "1,0.8,0.5",
+        "BallSpdParam"  : "1,0.8,0.5",
+        "BoardLengthwParam" : "1,0.8,0.5"
+    },
+    {
+        "ID" : "4",
+        "BallSizeParam" : "1,1,1,1",
+        "BallSpdParam"  : "1,1,1,1",
+        "BoardLengthwParam" : "1,1,1,1"
+    },
+    {
+        "ID" : "5",
+        "BallSizeParam" : "1,1,1,1,1",
+        "BallSpdParam"  : "1,1,1,1,1",
+        "BoardLengthwParam" : "1,1,1,1,1"
+    },
+    {
+        "ID" : "6",
+        "BallSizeParam" : "1,1,1,1,1,1",
+        "BallSpdParam"  : "1,1,1,1,1,1",
+        "BoardLengthwParam" : "1,1,1,1,1,1"
+    },
+    {
+        "ID" : "7",
+        "BallSizeParam" : "1,1,1,1,1,1,1",
+        "BallSpdParam"  : "1,1,1,1,1,1,1",
+        "BoardLengthwParam" : "1,1,1,1,1,1,1"
+    },
+    {
+        "ID" : "8",
+        "BallSizeParam" : "1,1,1,1,1,1,1,1",
+        "BallSpdParam"  : "1,1,1,1,1,1,1,1",
+        "BoardLengthwParam" : "1,1,1,1,1,1,1,1"
+    },
+    {
+        "ID" : "9",
+        "BallSizeParam" : "1,1,1,1,1,1,1,1,1",
+        "BallSpdParam"  : "1,1,1,1,1,1,1,1,1",
+        "BoardLengthwParam" : "1,1,1,1,1,1,1,1,1"
+    },
+    {
+        "ID" : "10",
+        "BallSizeParam" : "1,1,1,1,1,1,1,1,1,1",
+        "BallSpdParam"  : "1,1,1,1,1,1,1,1,1,1",
+        "BoardLengthwParam" : "1,1,1,1,1,1,1,1,1,1"
+    },
+    {
+        "ID" : "11",
+        "BallSizeParam" : "1,1,1,1,1,1,1,1,1,1,1",
+        "BallSpdParam"  : "1,1,1,1,1,1,1,1,1,1,1",
+        "BoardLengthwParam" : "1,1,1,1,1,1,1,1,1,1,1"
+    },
+    {
+        "ID" : "12",
+        "BallSizeParam" : "1,1,1,1,1,1,1,1,1,1,1,1",
+        "BallSpdParam"  : "1,1,1,1,1,1,1,1,1,1,1,1",
+        "BoardLengthwParam" : "1,1,1,1,1,1,1,1,1,1,1,1"
+    },
+    {
+        "ID" : "13",
+        "BallSizeParam" : "1,1,1,1,1,1,1,1,1,1,1,1,1",
+        "BallSpdParam"  : "1,1,1,1,1,1,1,1,1,1,1,1,1",
+        "BoardLengthwParam" : "1,1,1,1,1,1,1,1,1,1,1,1,1"
+    },
+    {
+        "ID" : "14",
+        "BallSizeParam" : "1,1,1,1,1,1,1,1,1,1,1,1,1,1",
+        "BallSpdParam"  : "1,1,1,1,1,1,1,1,1,1,1,1,1,1",
+        "BoardLengthwParam" : "1,1,1,1,1,1,1,1,1,1,1,1,1,1"
+    },
+    {
+        "ID" : "15",
+        "BallSizeParam" : "1,1,1,1,1,1,1,1,1,1,1,1,1,1,1",
+        "BallSpdParam"  : "1,1,1,1,1,1,1,1,1,1,1,1,1,1,1",
+        "BoardLengthwParam" : "1,1,1,1,1,1,1,1,1,1,1,1,1,1,1"
+    },
+    {
+        "ID" : "16",
+        "BallSizeParam" : "1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1",
+        "BallSpdParam"  : "1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1",
+        "BoardLengthwParam" : "1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1"
+    },
+    {
+        "ID" : "17",
+        "BallSizeParam" : "1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1",
+        "BallSpdParam"  : "1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1",
+        "BoardLengthwParam" : "1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1"
+    },
+    {
+        "ID" : "18",
+        "BallSizeParam" : "1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1",
+        "BallSpdParam"  : "1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1",
+        "BoardLengthwParam" : "1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1"
+    },
+    {
+        "ID" : "19",
+        "BallSizeParam" : "1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1",
+        "BallSpdParam"  : "1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1",
+        "BoardLengthwParam" : "1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1"
+    },
+    {
+        "ID" : "20",
+        "BallSizeParam" : "1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1",
+        "BallSpdParam"  : "1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1",
+        "BoardLengthwParam" : "1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1"
+    },
+    {
+        "ID" : "",
+        "BallSizeParam" : "",
+        "BallSpdParam"  : "",
+        "BoardLengthwParam" : ""
+    },
+    {
+        "ID" : "",
+        "BallSizeParam" : "",
+        "BallSpdParam"  : "",
+        "BoardLengthwParam" : ""
+    }
+]

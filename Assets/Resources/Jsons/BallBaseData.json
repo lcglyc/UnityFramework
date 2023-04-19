@@ -1,0 +1,87 @@
+
+[
+    {
+        "ID" : "10001",
+        "BallName" : "精灵球",
+        "Ability"  : "普通",
+        "BallRes"  : "Ball1",
+        "BallNum"  : "4",
+        "DefalutScale" : "0.15",
+        "BaseAtk"      : "20",
+        "BaseSpd"      : "7",
+        "BulletTimeParam" : "1",
+        "FrozenFrameParam" : "1",
+        "UnlockType"       : "0",
+        "UnlockValue"      : "1"
+    },
+    {
+        "ID" : "10002",
+        "BallName" : "超级球",
+        "Ability"  : "狂野",
+        "BallRes"  : "Ball2",
+        "BallNum"  : "4",
+        "DefalutScale" : "0.2",
+        "BaseAtk"      : "30",
+        "BaseSpd"      : "8",
+        "BulletTimeParam" : "1",
+        "FrozenFrameParam" : "1",
+        "UnlockType"       : "0",
+        "UnlockValue"      : "5"
+    },
+    {
+        "ID" : "10003",
+        "BallName" : "高级球",
+        "Ability"  : "沉重",
+        "BallRes"  : "Ball3",
+        "BallNum"  : "6",
+        "DefalutScale" : "0.25",
+        "BaseAtk"      : "30",
+        "BaseSpd"      : "7",
+        "BulletTimeParam" : "1",
+        "FrozenFrameParam" : "1",
+        "UnlockType"       : "0",
+        "UnlockValue"      : "15"
+    },
+    {
+        "ID" : "10004",
+        "BallName" : "大师球",
+        "Ability"  : "爆裂",
+        "BallRes"  : "Ball4",
+        "BallNum"  : "6",
+        "DefalutScale" : "0.3",
+        "BaseAtk"      : "45",
+        "BaseSpd"      : "9",
+        "BulletTimeParam" : "1",
+        "FrozenFrameParam" : "1",
+        "UnlockType"       : "0",
+        "UnlockValue"      : "18"
+    },
+    {
+        "ID" : "",
+        "BallName" : "",
+        "Ability"  : "",
+        "BallRes"  : "",
+        "BallNum"  : "",
+        "DefalutScale" : "",
+        "BaseAtk"      : "",
+        "BaseSpd"      : "",
+        "BulletTimeParam" : "",
+        "FrozenFrameParam" : "",
+        "UnlockType"       : "",
+        "UnlockValue"      : ""
+    },
+    {
+        "ID" : "",
+        "BallName" : "",
+        "Ability"  : "",
+        "BallRes"  : "",
+        "BallNum"  : "",
+        "DefalutScale" : "",
+        "BaseAtk"      : "",
+        "BaseSpd"      : "",
+        "BulletTimeParam" : "",
+        "FrozenFrameParam" : "",
+        "UnlockType"       : "",
+        "UnlockValue"      : ""
+    }
+]

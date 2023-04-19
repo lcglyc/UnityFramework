@@ -1,0 +1,107 @@
+
+[
+    {
+        "Name" : "BoardBottomPix",
+        "ValueKey" : "204"
+    },
+    {
+        "Name" : "LevelTimeLimit",
+        "ValueKey" : "30"
+    },
+    {
+        "Name" : "BallShootAngle",
+        "ValueKey" : "45"
+    },
+    {
+        "Name" : "WaveChangeBricks_intlist",
+        "ValueKey" : "1,10,2|11,15,3|16,20,4|21,25,5|26,50,6|51,999,8"
+    },
+    {
+        "Name" : "WaveChangeTime",
+        "ValueKey" : "0.8"
+    },
+    {
+        "Name" : "BallSizeMin",
+        "ValueKey" : "0.1"
+    },
+    {
+        "Name" : "BoardLengthMin",
+        "ValueKey" : "1"
+    },
+    {
+        "Name" : "BrickBroken1Cond",
+        "ValueKey" : "0.6"
+    },
+    {
+        "Name" : "BrickBroken2Cond",
+        "ValueKey" : "0.3"
+    },
+    {
+        "Name" : "ReviveTime",
+        "ValueKey" : "10"
+    },
+    {
+        "Name" : "ReviveNeedCrys",
+        "ValueKey" : "5"
+    },
+    {
+        "Name" : "",
+        "ValueKey" : ""
+    },
+    {
+        "Name" : "",
+        "ValueKey" : ""
+    },
+    {
+        "Name" : "",
+        "ValueKey" : ""
+    },
+    {
+        "Name" : "",
+        "ValueKey" : ""
+    },
+    {
+        "Name" : "",
+        "ValueKey" : ""
+    },
+    {
+        "Name" : "",
+        "ValueKey" : ""
+    },
+    {
+        "Name" : "",
+        "ValueKey" : ""
+    },
+    {
+        "Name" : "",
+        "ValueKey" : ""
+    },
+    {
+        "Name" : "",
+        "ValueKey" : ""
+    },
+    {
+        "Name" : "",
+        "ValueKey" : ""
+    },
+    {
+        "Name" : "",
+        "ValueKey" : ""
+    },
+    {
+        "Name" : "",
+        "ValueKey" : ""
+    },
+    {
+        "Name" : "",
+        "ValueKey" : ""
+    },
+    {
+        "Name" : "",
+        "ValueKey" : ""
+    },
+    {
+        "Name" : "",
+        "ValueKey" : ""
+    }
+]
